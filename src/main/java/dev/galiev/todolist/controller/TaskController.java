@@ -17,7 +17,7 @@ public class TaskController {
     @Autowired
     TasksRepository tasksRepository;
 
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<List<Task>> getTasks() {
         return new ResponseEntity<>(tasksRepository.findAll(), HttpStatus.OK);
     }
@@ -29,7 +29,7 @@ public class TaskController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("")
+    @PostMapping("/")
     public ResponseEntity<Task> addTask(@RequestBody Task task) {
         if (task.getDescription() == null || task.getTitle() == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -37,7 +37,7 @@ public class TaskController {
         return new ResponseEntity<>(tasksRepository.save(task), HttpStatus.CREATED);
     }
 
-    @PatchMapping("")
+    @PatchMapping("/")
     public ResponseEntity<Task> updateTask(@RequestBody Task task) {
         Task taskToUpdate = tasksRepository.findById(task.getId()).orElse(null);
         if(taskToUpdate != null) {
@@ -58,6 +58,16 @@ public class TaskController {
         if(task != null) {
             task.setCompleted(!task.isCompleted());
             return new ResponseEntity<>(tasksRepository.save(task), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Task> deleteTask(@PathVariable long id) {
+        Task task = tasksRepository.findById(id).orElse(null);
+        if(task != null) {
+            tasksRepository.delete(task);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
