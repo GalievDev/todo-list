@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -22,6 +23,8 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private Role role;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -33,4 +36,7 @@ public class User implements UserDetails {
         return email;
     }
 
+    public boolean hasPermission(Task task) {
+        return tasks.contains(task);
+    }
 }

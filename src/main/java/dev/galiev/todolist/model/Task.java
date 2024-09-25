@@ -1,5 +1,6 @@
 package dev.galiev.todolist.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,10 @@ public class Task {
     private boolean completed;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
 
     @PrePersist
     protected void onCreate() {
