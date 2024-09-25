@@ -46,12 +46,12 @@ public class UserController {
     }
 
     @PatchMapping("/")
-    public ResponseEntity<Task> updateTask(@RequestBody Task task) {
+    public ResponseEntity<?> updateTask(@RequestBody Task task) {
         Task taskToUpdate = tasksRepository.findById(task.getId()).orElse(null);
         if(taskToUpdate != null) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String email = authentication.getName();
-            userRepository.findByEmail(email)
+            return userRepository.findByEmail(email)
                     .map(user -> {
                         if (user.hasPermission(taskToUpdate)) {
                             if (task.getTitle() != null) {
@@ -61,12 +61,14 @@ public class UserController {
                                 taskToUpdate.setDescription(task.getDescription());
                             }
                             return new ResponseEntity<>(tasksRepository.save(taskToUpdate), HttpStatus.OK);
+                        } else {
+                            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
                         }
-                        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
                     })
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PatchMapping("/{id}")
@@ -91,12 +93,12 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Task> deleteTask(@PathVariable long id) {
+    public ResponseEntity<?> deleteTask(@PathVariable long id) {
         Task task = tasksRepository.findById(id).orElse(null);
         if(task != null) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String email = authentication.getName();
-            userRepository.findByEmail(email)
+            return userRepository.findByEmail(email)
                     .map(user -> {
                         if (user.hasPermission(task)) {
                             tasksRepository.delete(task);
@@ -106,7 +108,8 @@ public class UserController {
                         }
                     })
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
