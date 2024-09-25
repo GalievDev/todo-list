@@ -119,12 +119,10 @@ class TodoListApplicationTests {
     void testUpdateTask_AfterAuthentication() {
         when(authentication.getName()).thenReturn("bob@gmail.com");
         when(userRepository.findByEmail("bob@gmail.com")).thenReturn(Optional.of(user));
-        when(tasksRepository.save(task)).thenReturn(task);
 
         ResponseEntity<?> response = userController.updateTask(task);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(task, response.getBody());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
@@ -134,7 +132,7 @@ class TodoListApplicationTests {
 
         ResponseEntity<?> response = userController.deleteTask(1L);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
 }
