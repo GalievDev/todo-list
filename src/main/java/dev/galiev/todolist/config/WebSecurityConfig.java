@@ -30,7 +30,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers("/api/v1/auth/**")
                             .permitAll()
-                            .requestMatchers("/api/v1/tasks/**").hasAnyRole(Role.USER.name())
+                            .requestMatchers("/api/v1/users/**").hasAnyRole(Role.USER.name())
                             .anyRequest()
                             .authenticated();
                 })
