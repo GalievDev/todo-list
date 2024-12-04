@@ -13,12 +13,18 @@ import java.util.stream.Collectors;
 public enum Role {
     USER(
             Set.of(
-                    Permissions.USERS_DELETE,
-                    Permissions.USERS_CREATE,
                     Permissions.USERS_UPDATE,
                     Permissions.USERS_READ
             )
     ),
+    ADMIN(
+            Set.of(
+                    Permissions.ADMIN_DELETE,
+                    Permissions.ADMIN_UPDATE,
+                    Permissions.ADMIN_READ,
+                    Permissions.ADMIN_CREATE
+            )
+    )
     ;
 
     private final Set<Permissions> permissions;

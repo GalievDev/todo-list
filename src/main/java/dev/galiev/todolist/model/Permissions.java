@@ -10,6 +10,10 @@ public enum Permissions {
     USERS_CREATE("users:create"),
     USERS_UPDATE("users:update"),
     USERS_DELETE("users:delete"),
+    ADMIN_READ("admins:read"),
+    ADMIN_CREATE("admins:create"),
+    ADMIN_UPDATE("admins:update"),
+    ADMIN_DELETE("admins:delete"),
     ;
 
     private final String permission;
