@@ -1,12 +1,11 @@
 package dev.galiev.todolist.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,16 +18,16 @@ public class Task {
     private Long id;
     private String title;
     private String description;
-    private boolean completed;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    @Enumerated(EnumType.STRING)
+    private Status status;
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private User author;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private User user;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = new Date();
-    }
+    private User assignedUser;
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
 }
