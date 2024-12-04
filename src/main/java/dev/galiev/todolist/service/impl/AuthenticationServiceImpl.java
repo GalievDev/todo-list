@@ -3,7 +3,6 @@ package dev.galiev.todolist.service.impl;
 import dev.galiev.todolist.dto.AuthRequest;
 import dev.galiev.todolist.dto.AuthResponse;
 import dev.galiev.todolist.dto.RegisterRequest;
-import dev.galiev.todolist.model.Role;
 import dev.galiev.todolist.repository.UserRepository;
 import dev.galiev.todolist.security.JwtService;
 import dev.galiev.todolist.service.AuthenticationService;
@@ -33,7 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
+                .role(request.getRole())
                 .build();
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
