@@ -5,6 +5,28 @@
 ## Description
 List of tasks with user authorization
 
+Examples:
+```http request
+### Register user
+POST localhost:8080/api/v1/register/
+Content-Type: application/json
+{
+  "username": "Bob",
+  "email": "bob@gmail.com",
+  "password: "123456"
+}
+
+### Get all tasks
+GET localhost:8080/api/v1/tasks
+Authorization: Bearer {{auth-token}}
+
+### Get task by id
+GET localhost:8080/api/v1/tasks/{{id}}
+Authorization: Bearer {{auth-token}}
+
+```
+
+
 ## Deployement
 
 Don't forget to create and connect database named *task* in `application.propertires`
@@ -41,3 +63,5 @@ And run the `.jar` file:
 ```bash
 java -jar todo-list-1.0.0.jar
 ```
+## Swagger Docs
+Swagger UI documentation will be aviable after running app in the link: "your_host:your_port/swagger-ui.html"
